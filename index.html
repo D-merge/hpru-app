@@ -662,7 +662,7 @@ function loadSheetData(onDone) {
   }
  
   // Try direct fetch first, fall back to CORS proxy if needed
-  var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(SHEET_CSV_URL);
+  var proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(SHEET_CSV_URL);
  
   function tryFetch(url, useProxy, fallbackFn) {
     var xhr = new XMLHttpRequest();
@@ -671,7 +671,9 @@ function loadSheetData(onDone) {
     xhr.onload = function() {
       if (xhr.status === 200 && xhr.responseText && xhr.responseText.length > 50) {
         try {
-          var parsed = parseCSV(xhr.responseText);
+          var text = xhr.responseText;
+          if (isProxy) { try { var j=JSON.parse(text); text=j.contents||text; } catch(e){} }
+          var parsed = parseCSV(text);
           if (parsed) { TOPICS = parsed; onDone(true); return; }
         } catch(e) {}
       }
@@ -871,7 +873,7 @@ function doSearch(q) {
   if (hits.length === 0) {
     srList.innerHTML = '<div class="empty"><div class="big">🤷</div>No resources found. Try a different term.</div>';
     return;
-  }
+  
   hits.forEach(function(h) {
     var r = h.r; var t = h.topic;
     var card = document.createElement('div');
