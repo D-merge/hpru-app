@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HPRU – Health Promotion R Us</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:      #1565c0;
+      --blue-dk:   #0d3880;
+      --blue-md:   #1976d2;
+      --blue-lt:   #deeaf8;
+      --orange:    #e8650a;
+      --orange-dk: #b54200;
+      --orange-lt: #fdf0e4;
+      --ochre:     #c8860a;
+      --sand:      #f5ead8;
+      --deep:      #0a1628;
+      --slate:     #5a6070;
+      --mist:      #f4f0ea;
+      --white:     #ffffff;
+      --shadow:    0 4px 24px rgba(10,22,40,.11);
+      --shadow-lg: 0 10px 36px rgba(10,22,40,.18);
+      --radius:    16px;
+      --radius-sm: 10px;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--mist); color: var(--deep); min-height: 100vh; }
+
+    @keyframes fadeIn  { from { opacity:0; }                        to { opacity:1; } }
+    @keyframes slideUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeOut { from { opacity:1; }                        to { opacity:0; } }
+
+    /* ══════════════════════════════════════
+       SPLASH — fits one screen, all sizes
+    ══════════════════════════════════════ */
+    #splash {
+      position: fixed; inset: 0; z-index: 999;
+      background: var(--deep);
+      display: flex; flex-direction: column; align-items: center;
+      animation: fadeIn .4s ease;
+      overflow: hidden;
+    }
+
+    /* Flag bars */
+    .splash-flagbar { width: 100%; height: 8px; display: flex; flex-shrink: 0; }
+    .splash-flagbar span { flex: 1; }
+    .splash-flagbar span:nth-child(1) { background: #1a1a1a; }
+    .splash-flagbar span:nth-child(2) { background: var(--orange); }
+    .splash-flagbar span:nth-child(3) { background: #1a1a1a; }
+
+    .splash-flagbar-bot { width: 100%; height: 8px; display: flex; flex-shrink: 0; }
+    .splash-flagbar-bot span { flex: 1; }
+    .splash-flagbar-bot span:nth-child(1) { background: #1a5faa; }
+    .splash-flagbar-bot span:nth-child(2) { background: var(--white); }
+    .splash-flagbar-bot span:nth-child(3) { background: #1a5faa; }
+
+    /* Centred body — flex fills remaining space */
+    .splash-body {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: space-evenly;
+      padding: 8px 20px 4px;
+      width: 100%; max-width: 480px;
+    }
+
+    .splash-emblem {
+      width: 82px; height: 82px; border-radius: 50%;
+      background: var(--orange);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px;
+      box-shadow: 0 0 0 7px rgba(232,101,10,.22), 0 6px 24px rgba(0,0,0,.5);
+      animation: slideUp .5s ease .1s both;
+      flex-shrink: 0;
+    }
+
+    .splash-titles { text-align: center; animation: slideUp .5s ease .18s both; }
+    .splash-title {
+      font-size: 24px; font-weight: 800; color: var(--white); margin-bottom: 4px;
+    }
+    .splash-tagline {
+      font-size: 11px; color: rgba(255,255,255,.5);
+      text-transform: uppercase; letter-spacing: .14em;
+    }
+
+    /* Dot divider */
+    .splash-dots {
+      display: flex; gap: 7px; align-items: center;
+      animation: slideUp .5s ease .26s both;
+    }
+    .splash-dots i { display: block; border-radius: 50%; background: var(--orange); }
+    .splash-dots i:nth-child(1),
+    .splash-dots i:nth-child(5) { width:6px; height:6px; opacity:.7; }
+    .splash-dots i:nth-child(2),
+    .splash-dots i:nth-child(4) { width:8px; height:8px; opacity:.85; }
+    .splash-dots i:nth-child(3) { width:12px; height:12px; }
+
+    .splash-prompt {
+      font-size: 11px; font-weight: 700; color: rgba(255,255,255,.55);
+      letter-spacing: .14em; text-transform: uppercase;
+      animation: slideUp .5s ease .3s both;
+    }
+
+    /* Role cards — SIDE BY SIDE, solid colours */
+    .role-cards {
+      display: flex; flex-direction: row; gap: 14px;
+      justify-content: center; width: 100%;
+      animation: slideUp .5s ease .36s both;
+    }
+    .role-card {
+      border-radius: 18px;
+      flex: 1; max-width: 190px;
+      padding: 20px 14px 18px;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      cursor: pointer;
+      transition: transform .2s, filter .2s;
+    }
+    .role-card.patient {
+      background: #1565c0;
+      border: 3px solid #64b5f6;
+      box-shadow: 0 6px 22px rgba(21,101,192,.55);
+    }
+    .role-card.clinician {
+      background: var(--orange);
+      border: 3px solid #ffb04a;
+      box-shadow: 0 6px 22px rgba(232,101,10,.55);
+    }
+    .role-card:hover { transform: translateY(-4px); filter: brightness(1.1); }
+    .role-ico  { font-size: 34px; }
+    .role-name { font-size: 15px; font-weight: 800; color: var(--white); }
+    .role-hint { font-size: 10.5px; color: rgba(255,255,255,.8); text-align: center; line-height: 1.45; }
+
+    /* Acknowledgement — tight, above bottom bar */
+    .splash-ack {
+      font-size: 9.5px; color: rgba(255,255,255,.32);
+      text-align: center; padding: 8px 20px 6px;
+      line-height: 1.5; width: 100%; flex-shrink: 0;
+      animation: slideUp .4s ease .48s both;
+    }
+
+    /* ══════════════════════════════════════
+       APP SHELL
+    ══════════════════════════════════════ */
+    #app { display: none; }
+    #app.visible { display: block; animation: fadeIn .3s ease; }
+
+    /* ── HEADER ── */
+    #header {
+      background: var(--deep);
+      border-top: 5px solid var(--orange);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,.4);
+    }
+    .header-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 12px; height: 58px; padding: 0 18px; }
+
+    .home-btn {
+      width: 34px; height: 34px; flex-shrink: 0;
+      background: var(--orange); border: none; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; cursor: pointer;
+      box-shadow: 0 0 0 3px rgba(232,101,10,.28);
+      transition: transform .18s, box-shadow .18s;
+    }
+    .home-btn:hover { transform: scale(1.1); box-shadow: 0 0 0 5px rgba(232,101,10,.4); }
+
+    .hdr-title { flex-shrink: 0; }
+    .hdr-title h1 { font-size: 14px; font-weight: 800; color: var(--white); line-height: 1.2; }
+    .hdr-title p  { font-size: 9.5px; color: rgba(255,255,255,.38); text-transform: uppercase; letter-spacing: .07em; }
+
+    .hdr-sep { width: 1px; height: 24px; background: rgba(255,255,255,.12); flex-shrink: 0; }
+
+    .role-badge { flex-shrink: 0; font-size: 10.5px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: .04em; text-transform: uppercase; }
+    .role-badge.patient   { background: rgba(100,181,246,.15); color: #90caf9; border: 1px solid rgba(100,181,246,.3); }
+    .role-badge.clinician { background: rgba(232,101,10,.15);  color: #ffb060; border: 1px solid rgba(232,101,10,.35); }
+
+    .search-wrap { flex: 1; position: relative; min-width: 0; }
+    .search-wrap .s-ico { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; pointer-events: none; }
+    #global-search { width: 100%; background: rgba(255,255,255,.09); border: 1.5px solid rgba(255,255,255,.14); border-radius: 28px; padding: 7px 14px 7px 34px; font-size: 13px; color: var(--white); outline: none; font-family: inherit; transition: background .2s, border-color .2s; }
+    #global-search::placeholder { color: rgba(255,255,255,.35); }
+    #global-search:focus { background: rgba(255,255,255,.14); border-color: var(--orange); }
+
+    /* ══════════════════════════════════════
+       SCREENS
+    ══════════════════════════════════════ */
+    #main { max-width: 960px; margin: 0 auto; padding: 24px 16px 60px; }
+
+    /* screen transitions */
+    .screen { display: none; }
+    .screen.active { display: block; animation: fadeIn .25s ease; }
+
+    /* ── HERO ── */
+    .hero {
+      border-radius: var(--radius); padding: 22px 26px; margin-bottom: 22px;
+      display: flex; align-items: center; gap: 16px;
+      box-shadow: var(--shadow-lg); position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.1) 1.5px, transparent 1.5px);
+      background-size: 22px 22px; pointer-events: none;
+    }
+    .hero.patient-hero   { background: linear-gradient(135deg, var(--blue-md) 0%, var(--blue-dk) 100%); border-left: 5px solid #90caf9; }
+    .hero.clinician-hero { background: linear-gradient(135deg, var(--orange)  0%, var(--orange-dk) 100%); border-left: 5px solid var(--ochre); }
+    .hero-icon { font-size: 36px; flex-shrink: 0; position: relative; z-index: 1; }
+    .hero-text { position: relative; z-index: 1; }
+    .hero-text h2 { font-size: 18px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
+    .hero-text p  { font-size: 13px; color: rgba(255,255,255,.8); }
+
+    /* ══════════════════════════════════════
+       TILE GRID (home screen)
+    ══════════════════════════════════════ */
+    .section-lbl { font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--slate); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .section-lbl::after { content:''; flex:1; height:1px; background: linear-gradient(90deg, #c8a878 0%, transparent 80%); }
+
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px;
+    }
+
+    .topic-tile {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 2px solid transparent;
+      cursor: pointer;
+      padding: 22px 16px 18px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      text-align: center;
+      transition: transform .18s, box-shadow .18s, border-color .18s;
+      position: relative; overflow: hidden;
+    }
+    /* Dot strip at top of each tile */
+    .topic-tile::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 5px;
+      background-image: radial-gradient(circle, currentColor 1.8px, transparent 1.8px);
+      background-size: 10px 5px;
+    }
+    .patient-tile::before   { color: var(--blue-md); }
+    .clinician-tile::before { color: var(--orange); }
+
+    .topic-tile:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .patient-tile:hover   { border-color: var(--blue-md); }
+    .clinician-tile:hover { border-color: var(--orange); }
+
+    .tile-icon { font-size: 36px; }
+    .tile-label { font-size: 13.5px; font-weight: 700; color: var(--deep); line-height: 1.3; }
+    .tile-count {
+      font-size: 10.5px; font-weight: 600; padding: 2px 9px; border-radius: 20px;
+    }
+    .patient-tile   .tile-count { background: var(--blue-lt); color: var(--blue-dk); }
+    .clinician-tile .tile-count { background: var(--orange-lt); color: var(--orange-dk); }
+
+    /* ══════════════════════════════════════
+       TOPIC PAGE
+    ══════════════════════════════════════ */
+    .topic-page-header {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+      border-left: 5px solid transparent;
+    }
+    .patient-page   .topic-page-header { border-left-color: var(--blue-md); }
+    .clinician-page .topic-page-header { border-left-color: var(--orange); }
+
+    .back-btn {
+      background: none; border: none; cursor: pointer;
+      font-size: 20px; flex-shrink: 0; padding: 4px;
+      border-radius: 8px; transition: background .15s;
+    }
+    .back-btn:hover { background: var(--mist); }
+    .page-ico { font-size: 32px; flex-shrink: 0; }
+    .page-meta { flex: 1; }
+    .page-meta h2 { font-size: 18px; font-weight: 800; margin-bottom: 2px; }
+    .page-meta p  { font-size: 12px; color: var(--slate); }
+
+    /* Sub-search on topic page */
+    .page-search-wrap { position: relative; margin-bottom: 14px; }
+    .page-search-wrap .s-ico { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; color: var(--slate); }
+    .page-search {
+      width: 100%; border: 1.5px solid #d8cfc4; border-radius: 28px;
+      padding: 9px 16px 9px 38px; font-size: 13px; font-family: inherit;
+      color: var(--deep); background: var(--white); outline: none;
+      transition: border-color .2s; box-shadow: var(--shadow);
+    }
+    .patient-page   .page-search:focus { border-color: var(--blue-md); }
+    .clinician-page .page-search:focus { border-color: var(--orange); }
+
+    /* Resource tiles on topic page */
+    .res-tile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .res-tile {
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      display: flex; flex-direction: column; gap: 10px;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+      border: 1.5px solid transparent;
+    }
+    .res-tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .patient-page   .res-tile:hover { border-color: var(--blue-lt); }
+    .clinician-page .res-tile:hover { border-color: var(--orange-lt); }
+
+    .res-tile-top { display: flex; align-items: center; gap: 10px; }
+    .res-tile-ico { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+    .res-tile-title { font-size: 13.5px; font-weight: 700; line-height: 1.3; flex: 1; }
+    .res-tile-desc  { font-size: 11.5px; color: var(--slate); line-height: 1.45; }
+    .res-tile-foot  { display: flex; justify-content: flex-end; }
+    .badge { font-size: 9.5px; font-weight: 700; padding: 2px 8px; border-radius: 18px; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+    .b-pdf   { background: #ffecd6; color: #8a3000; }
+    .b-link  { background: var(--blue-lt); color: var(--blue-dk); }
+    .b-video { background: #fde8e8; color: #8a1a00; }
+    .b-tool  { background: var(--orange-lt); color: var(--orange-dk); }
+
+    .empty { text-align: center; padding: 40px 16px; color: var(--slate); font-size: 14px; }
+    .empty .big { font-size: 36px; margin-bottom: 10px; }
+
+    /* ══════════════════════════════════════
+       SEARCH RESULTS SCREEN
+    ══════════════════════════════════════ */
+    .sr-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .sr-count { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--slate); }
+    .clear-btn { font-size: 12px; background: none; border: none; cursor: pointer; font-family: inherit; padding: 4px 10px; border-radius: 6px; font-weight: 600; }
+    .patient-clear   { color: var(--blue-md); }
+    .clinician-clear { color: var(--orange); }
+    .clear-btn:hover { background: var(--sand); }
+    .sr-card { background: var(--white); border-radius: var(--radius-sm); padding: 13px 15px; margin-bottom: 8px; box-shadow: 0 2px 10px rgba(10,22,40,.07); display: flex; align-items: flex-start; gap: 12px; cursor: pointer; transition: box-shadow .15s; }
+    .sr-card:hover { box-shadow: var(--shadow); }
+    .sr-body { flex: 1; }
+    .sr-body b { font-size: 13.5px; font-weight: 600; display: block; }
+    .sr-desc  { font-size: 12px; color: var(--slate); display: block; margin-top: 2px; }
+    .sr-topic { font-size: 11px; font-weight: 700; display: block; margin-top: 4px; }
+    .patient-topic   { color: var(--blue-md); }
+    .clinician-topic { color: var(--orange); }
+
+    /* Footer */
+    .app-footer { max-width: 960px; margin: 0 auto; padding: 0 16px 28px; }
+    .footer-bar { height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--orange), var(--ochre), #90caf9, transparent); }
+    .footer-txt { font-size: 10px; color: var(--slate); text-align: center; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<!-- ════════ SPLASH ════════ -->
+<div id="splash">
+  <div class="splash-flagbar"><span></span><span></span><span></span></div>
+
+  <div class="splash-body">
+    <div class="splash-emblem">🌿</div>
+    <div class="splash-titles">
+      <div class="splash-title">Health Promotion R Us</div>
+      <div class="splash-tagline">Resource Library</div>
+    </div>
+
+    <div class="splash-dots">
+      <i></i><i></i><i></i><i></i><i></i>
+    </div>
+
+    <div class="splash-prompt">I am a…</div>
+    <div class="role-cards">
+      <div class="role-card patient" onclick="selectRole('patient')">
+        <div class="role-ico">🧑‍🤝‍🧑</div>
+        <div class="role-name">Patient</div>
+        <div class="role-hint">Health info &amp; resources for me and my family</div>
+      </div>
+      <div class="role-card clinician" onclick="selectRole('clinician')">
+        <div class="role-ico">🩺</div>
+        <div class="role-name">Clinician</div>
+        <div class="role-hint">Clinical tools, guidelines &amp; education resources</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="splash-ack">We acknowledge the Traditional Custodians of Country throughout Australia and pay our respects to Elders past and present.</div>
+  <div class="splash-flagbar-bot"><span></span><span></span><span></span></div>
+</div>
+
+<!-- ════════ APP ════════ -->
+<div id="app">
+  <div id="header">
+    <div class="header-inner">
+      <button class="home-btn" onclick="goHome()" title="Return to home">🏠</button>
+      <div class="hdr-title">
+        <h1>Health Promotion R Us</h1>
+        <p>Resource Library</p>
+      </div>
+      <div class="hdr-sep"></div>
+      <div id="role-badge" class="role-badge"></div>
+      <div class="search-wrap">
+        <span class="s-ico">🔍</span>
+        <input id="global-search" type="text" placeholder="Search all resources…" autocomplete="off" />
+      </div>
+    </div>
+  </div>
+
+  <div id="main">
+
+    <!-- SCREEN 1: Home tile grid -->
+    <div id="screen-home" class="screen">
+      <div class="hero" id="hero-banner">
+        <div class="hero-icon" id="hero-icon"></div>
+        <div class="hero-text">
+          <h2 id="hero-title"></h2>
+          <p id="hero-sub"></p>
+        </div>
+      </div>
+      <div class="section-lbl">Health Topics</div>
+      <div class="tile-grid" id="tile-grid"></div>
+    </div>
+
+    <!-- SCREEN 2: Topic page -->
+    <div id="screen-topic" class="screen">
+      <div class="topic-page-header" id="topic-page-header">
+        <button class="back-btn" onclick="showHome()" title="Back to topics">◀</button>
+        <div class="page-ico" id="page-ico"></div>
+        <div class="page-meta">
+          <h2 id="page-title"></h2>
+          <p id="page-sub"></p>
+        </div>
+      </div>
+      <div class="page-search-wrap">
+        <span class="s-ico">🔍</span>
+        <input class="page-search" id="page-search" type="text" placeholder="Search within this topic…" autocomplete="off" />
+      </div>
+      <div class="res-tile-grid" id="res-tile-grid"></div>
+    </div>
+
+    <!-- SCREEN 3: Search results -->
+    <div id="screen-search" class="screen">
+      <div class="sr-bar">
+        <div class="sr-count" id="sr-count"></div>
+        <button class="clear-btn" id="clear-btn" onclick="clearSearch()">✕ Clear</button>
+      </div>
+      <div id="sr-list"></div>
+    </div>
+
+  </div>
+
+  <div class="app-footer">
+    <div class="footer-bar"></div>
+    <div class="footer-txt">Acknowledging Country · HPRU Resource Library</div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   GOOGLE SHEETS CONFIG
+   Replace PASTE_YOUR_URL_HERE with your published CSV URL.
+   In Google Sheets: File → Share → Publish to web → CSV format
+   ════════════════════════════════════════════════════════════════ */
+var SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTqhB2xT43RTWAaCk0vvZnguaFFjyomAUSNhN0j2VR3X5wr4_88AfM5Q22aTeh_Cg/pub?gid=332757259&single=true&output=csv';
+
+/* ════════════════════════════ TOPIC COLOUR MAP
+   Defines background colour for each topic tile icon.
+   Add a new entry here if you add a new topic_id in the sheet. */
+var TOPIC_BG = {
+  pregnancy: "#fff0f7", smoking:  "#f0fdf4", diabetes: "#eff6ff",
+  rhd:       "#fff5f5", anaemia:  "#fff7ed", mental:   "#f5f3ff",
+  nutrition: "#ecfdf5", physical: "#fffbeb"
+};
+
+/* ════════════════════════════ FALLBACK DATA
+   Used when the app is offline or the sheet cannot be reached.
+   Keep this in sync with your sheet during quarterly reviews. */
+var FALLBACK_TOPICS = [
+  {
+    id:"pregnancy", icon:"🤰", bg:"#fff0f7",
+    label:"Pregnancy & Breastfeeding",
+    sub:"Antenatal care, nutrition, feeding support",
+    resources:[
+      {type:"pdf",   title:"Antenatal Care Guidelines",        desc:"Evidence-based guidelines for pregnancy care",                     url:"#"},
+      {type:"link",  title:"Healthy Eating During Pregnancy",  desc:"Eat for Health – Australian Government",                           url:"https://www.eatforhealth.gov.au/eating-well/eating-well-through-different-life-stages/eating-well-during-pregnancy"},
+      {type:"video", title:"Breastfeeding – Getting Started",  desc:"YouTube · Australian Breastfeeding Assoc. · 8 min",                url:"https://www.youtube.com/results?search_query=breastfeeding+getting+started+australia"},
+      {type:"video", title:"Safe Sleep for Babies",            desc:"YouTube · Red Nose Australia · 5 min",                             url:"https://www.youtube.com/results?search_query=safe+sleep+for+babies+australia"},
+      {type:"pdf",   title:"Postnatal Depression Info",        desc:"Recognising and seeking help for PND",                             url:"#"},
+      {type:"tool",  title:"Foetal Movement Tracking Guide",   desc:"Kick counting instructions for expectant mothers",                 url:"#"}
+    ]
+  },
+  {
+    id:"smoking", icon:"🚭", bg:"#f0fdf4",
+    label:"Smoking Cessation",
+    sub:"Quit support, NRT, resources for families",
+    resources:[
+      {type:"link",  title:"Quitline – 13 7848",                      desc:"Free telephone & online coaching service",                   url:"https://www.quit.org.au/"},
+      {type:"video", title:"Why Quitting Is Hard – And How to Do It", desc:"YouTube · Quit Victoria · 12 min",                           url:"https://www.youtube.com/results?search_query=quit+smoking+tips+australia"},
+      {type:"pdf",   title:"NRT Options Guide",                       desc:"Patches, gum, lozenges – choosing what's right",             url:"#"},
+      {type:"pdf",   title:"Second-Hand Smoke & Children",            desc:"Health effects and protective strategies",                    url:"#"},
+      {type:"link",  title:"iCanQuit Online Program",                 desc:"NSW Health digital quit coaching platform",                   url:"https://www.icanquit.com.au/"},
+      {type:"tool",  title:"Quit Savings Calculator",                 desc:"See how much money you'll save by quitting",                  url:"https://www.quit.org.au/articles/quit-smoking-savings-calculator/"}
+    ]
+  },
+  {
+    id:"diabetes", icon:"🩸", bg:"#eff6ff",
+    label:"Diabetes",
+    sub:"Type 1, Type 2, gestational diabetes",
+    resources:[
+      {type:"link",  title:"Diabetes Australia – Patient Hub",  desc:"National resources for people living with diabetes",               url:"https://www.diabetesaustralia.com.au/"},
+      {type:"pdf",   title:"Understanding Type 2 Diabetes",     desc:"Plain-language explainer for newly diagnosed",                     url:"#"},
+      {type:"video", title:"How to Check Your Blood Sugar",     desc:"YouTube · Diabetes Australia · 6 min",                            url:"https://www.youtube.com/results?search_query=how+to+check+blood+sugar+australia"},
+      {type:"video", title:"Healthy Eating with Diabetes",      desc:"YouTube · Diabetes Queensland · 10 min",                          url:"https://www.youtube.com/results?search_query=healthy+eating+diabetes+australia"},
+      {type:"pdf",   title:"Gestational Diabetes Fact Sheet",   desc:"What it is, risks, and management during pregnancy",               url:"#"},
+      {type:"tool",  title:"Carbohydrate Counting Guide",       desc:"Meal-planning tool for blood glucose management",                  url:"#"},
+      {type:"link",  title:"NDSS – National Diabetes Services", desc:"Access subsidised products & education programs",                  url:"https://www.ndss.com.au/"}
+    ]
+  },
+  {
+    id:"rhd", icon:"❤️", bg:"#fff5f5",
+    label:"Rheumatic Heart Disease",
+    sub:"ARF prevention, secondary prophylaxis",
+    resources:[
+      {type:"link",  title:"RHD Australia – National Alliance",    desc:"Guidelines, data and advocacy resources",                       url:"https://www.rhdaustralia.org.au/"},
+      {type:"pdf",   title:"ARF & RHD – Community Fact Sheet",     desc:"Plain-language overview for patients & families",               url:"#"},
+      {type:"pdf",   title:"Secondary Prophylaxis Register Guide", desc:"Staying on benzathine penicillin injections",                   url:"#"},
+      {type:"video", title:"What Is Rheumatic Heart Disease?",     desc:"YouTube · RHD Australia · 7 min",                              url:"https://www.youtube.com/results?search_query=rheumatic+heart+disease+australia"},
+      {type:"tool",  title:"Strep Throat Identification Card",     desc:"Laminated reference for community health workers",              url:"#"},
+      {type:"link",  title:"End RHD – Research Hub",              desc:"Latest research and trial information",                          url:"https://www.endrhd.org.au/"}
+    ]
+  },
+  {
+    id:"anaemia", icon:"💊", bg:"#fff7ed",
+    label:"Anaemia & Iron Deficiency",
+    sub:"Iron-rich foods, supplementation, testing",
+    resources:[
+      {type:"pdf",   title:"Iron Deficiency Anaemia – Patient Guide", desc:"Causes, symptoms, treatment options",                        url:"#"},
+      {type:"pdf",   title:"Iron-Rich Foods Handout",                 desc:"Haem and non-haem iron sources with serving sizes",          url:"#"},
+      {type:"video", title:"Boosting Iron Absorption",                desc:"YouTube · Dietitians Australia · 8 min",                     url:"https://www.youtube.com/results?search_query=iron+absorption+tips+diet"},
+      {type:"link",  title:"Eat for Health – Iron",                   desc:"Australian Government dietary guidance on iron",             url:"https://www.eatforhealth.gov.au/nutrient-reference-values/nutrients/iron"},
+      {type:"tool",  title:"Iron Supplementation Protocol",           desc:"Dosing guide for community health workers",                  url:"#"}
+    ]
+  },
+  {
+    id:"mental", icon:"🧠", bg:"#f5f3ff",
+    label:"Mental Health & Wellbeing",
+    sub:"Stress, anxiety, depression, crisis support",
+    resources:[
+      {type:"link",  title:"Beyond Blue",                    desc:"Mental health info, forums and crisis support",                      url:"https://www.beyondblue.org.au/"},
+      {type:"link",  title:"Lifeline – 13 11 14",           desc:"24/7 crisis support and suicide prevention",                         url:"https://www.lifeline.org.au/"},
+      {type:"video", title:"5 Ways to Wellbeing",           desc:"YouTube · Black Dog Institute · 4 min",                              url:"https://www.youtube.com/results?search_query=five+ways+to+wellbeing"},
+      {type:"pdf",   title:"Psychological First Aid Guide", desc:"Supporting others in distress – practical steps",                    url:"#"},
+      {type:"link",  title:"Head to Health",                desc:"Australian Gov. digital mental health gateway",                       url:"https://www.headtohealth.gov.au/"},
+      {type:"tool",  title:"K10 Distress Questionnaire",   desc:"Clinician-facing screening tool (printable)",                        url:"#"}
+    ]
+  },
+  {
+    id:"nutrition", icon:"🥦", bg:"#ecfdf5",
+    label:"Nutrition & Healthy Eating",
+    sub:"Food groups, portion sizes, local produce",
+    resources:[
+      {type:"link",  title:"Australian Dietary Guidelines",     desc:"Eat for Health – government guidelines",                          url:"https://www.eatforhealth.gov.au/"},
+      {type:"pdf",   title:"Healthy Plate Poster",              desc:"Half vegies, quarter protein, quarter grains",                    url:"#"},
+      {type:"video", title:"Reading Food Labels",               desc:"YouTube · Dietitians Australia · 6 min",                         url:"https://www.youtube.com/results?search_query=how+to+read+food+labels+australia"},
+      {type:"tool",  title:"Portion Size Reference Card",       desc:"Handy visual guide for community use",                            url:"#"},
+      {type:"link",  title:"ATSI Nutrition Resources – NACCHO", desc:"Culturally appropriate nutrition resources",                      url:"https://www.naccho.org.au/"}
+    ]
+  },
+  {
+    id:"physical", icon:"🏃", bg:"#fffbeb",
+    label:"Physical Activity",
+    sub:"Guidelines, exercise plans, community programs",
+    resources:[
+      {type:"link",  title:"Australia's Physical Activity Guidelines", desc:"Australian Government recommendations by age group",        url:"https://www.health.gov.au/topics/physical-activity-and-exercise/physical-activity-and-exercise-guidelines-for-all-australians"},
+      {type:"pdf",   title:"Move More, Sit Less – Fact Sheet",         desc:"Sedentary behaviour risks and tips to get moving",          url:"#"},
+      {type:"video", title:"Chair Exercises for Beginners",            desc:"YouTube · Exercise Right Australia · 12 min",               url:"https://www.youtube.com/results?search_query=chair+exercises+beginners+australia"},
+      {type:"tool",  title:"Community Walk Route Map Template",        desc:"Customisable template for local walking programs",          url:"#"}
+    ]
+  }
+];
+
+/* ════════ Active topics (set by loader) ════════ */
+var TOPICS = FALLBACK_TOPICS;
+
+var TYPE_ICON = {pdf:"📄", link:"🔗", video:"▶️", tool:"🛠️"};
+var TYPE_BG   = {pdf:"#ffecd6", link:"#deeaf8", video:"#fde8e8", tool:"#fdf0e4"};
+var TYPE_CLS  = {pdf:"b-pdf",   link:"b-link",  video:"b-video", tool:"b-tool"};
+var TYPE_LBL  = {pdf:"PDF",     link:"Link",    video:"Video",   tool:"Tool"};
+
+/* ════════════════════════════════════════════════════════════════
+   CSV PARSER  — reads the Google Sheet published CSV
+   Expects header row: topic_id, topic_label, topic_icon,
+                       topic_sub, type, title, description, url
+   ════════════════════════════════════════════════════════════════ */
+function parseCSV(text) {
+  var lines = text.trim().split('\n');
+  if (lines.length < 2) return null;
+
+  // parse a single CSV line respecting quoted fields
+  function parseLine(line) {
+    var fields = []; var cur = ''; var inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { fields.push(cur.trim()); cur = ''; }
+      else { cur += c; }
+    }
+    fields.push(cur.trim());
+    return fields;
+  }
+
+  var headers = parseLine(lines[0]).map(function(h){ return h.replace(/^"|"$/g,'').trim(); });
+  var idx = {};
+  headers.forEach(function(h, i){ idx[h] = i; });
+
+  // require minimum columns
+  if (idx['topic_id'] === undefined || idx['title'] === undefined) return null;
+
+  var topicMap = {};
+  var topicOrder = [];
+
+  for (var r = 1; r < lines.length; r++) {
+    var f = parseLine(lines[r]);
+    if (!f || f.length < 4) continue;
+    var get = function(col){ return (idx[col] !== undefined && f[idx[col]]) ? f[idx[col]].replace(/^"|"$/g,'').trim() : ''; };
+
+    var tid   = get('topic_id');
+    var type  = get('type') || 'link';
+    var title = get('title');
+    if (!tid || !title) continue;
+
+    if (!topicMap[tid]) {
+      topicMap[tid] = {
+        id:    tid,
+        label: get('topic_label') || tid,
+        icon:  get('topic_icon')  || '📋',
+        sub:   get('topic_sub')   || '',
+        bg:    TOPIC_BG[tid]      || '#f0f4f9',
+        resources: []
+      };
+      topicOrder.push(tid);
+    }
+    topicMap[tid].resources.push({
+      type:  type,
+      title: title,
+      desc:  get('description'),
+      url:   get('url') || '#'
+    });
+  }
+
+  if (topicOrder.length === 0) return null;
+  return topicOrder.map(function(id){ return topicMap[id]; });
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SHEET LOADER — fetches CSV, falls back to bundled data
+   ════════════════════════════════════════════════════════════════ */
+function loadSheetData(onDone) {
+  if (!SHEET_CSV_URL || SHEET_CSV_URL === 'PASTE_YOUR_URL_HERE') {
+    onDone(false);
+    return;
+  }
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', SHEET_CSV_URL, true);
+  xhr.timeout = 8000;
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      try {
+        var parsed = parseCSV(xhr.responseText);
+        if (parsed) { TOPICS = parsed; onDone(true); return; }
+      } catch(e) {}
+    }
+    onDone(false);
+  };
+  xhr.onerror   = function(){ onDone(false); };
+  xhr.ontimeout = function(){ onDone(false); };
+  xhr.send();
+}
+
+var currentRole  = null;
+var currentTopic = null;
+
+/* ════════ NAVIGATION ════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showHome() {
+  document.getElementById('page-search').value = '';
+  showScreen('screen-home');
+}
+
+/* ════════ SPLASH → APP ════════ */
+function selectRole(role) {
+  currentRole = role;
+
+  // Show loading state on the selected card
+  var cards = document.querySelectorAll('.role-card');
+  cards.forEach(function(c){ c.style.pointerEvents = 'none'; c.style.opacity = '0.6'; });
+  var clicked = document.querySelector('.role-card.' + role);
+  if (clicked) {
+    var nameEl = clicked.querySelector('.role-name');
+    if (nameEl) nameEl.textContent = 'Loading…';
+  }
+
+  loadSheetData(function(fromSheet) {
+    var splash = document.getElementById('splash');
+    splash.style.animation = 'fadeOut .3s ease forwards';
+    setTimeout(function() {
+      splash.style.display = 'none';
+      // Reset cards
+      cards.forEach(function(c){ c.style.pointerEvents = ''; c.style.opacity = ''; });
+      var app = document.getElementById('app');
+      app.style.display = 'block';
+      app.style.animation = 'fadeIn .3s ease';
+      applyRole(role);
+      buildTileGrid();
+      showScreen('screen-home');
+      // Show subtle source indicator
+      if (!fromSheet) showDataBanner('Showing built-in content — connect to internet for latest resources');
+    }, 280);
+  });
+}
+
+function showDataBanner(msg) {
+  var existing = document.getElementById('data-banner');
+  if (existing) existing.remove();
+  var b = document.createElement('div');
+  b.id = 'data-banner';
+  b.style.cssText = 'background:#1a2740;color:rgba(255,255,255,.7);font-size:11px;text-align:center;padding:6px 16px;';
+  b.textContent = '⚠️  ' + msg;
+  var main = document.getElementById('main');
+  main.insertBefore(b, main.firstChild);
+  setTimeout(function(){ if(b.parentNode) b.parentNode.removeChild(b); }, 6000);
+}
+
+function applyRole(role) {
+  var isP = role === 'patient';
+  var badge = document.getElementById('role-badge');
+  badge.textContent = isP ? '👤 Patient' : '🩺 Clinician';
+  badge.className   = 'role-badge ' + role;
+
+  var hero = document.getElementById('hero-banner');
+  hero.className = 'hero ' + (isP ? 'patient-hero' : 'clinician-hero');
+  document.getElementById('hero-icon').textContent  = isP ? '🙋' : '🩺';
+  document.getElementById('hero-title').textContent = isP ? 'Welcome to HPRU' : 'HPRU Clinical Resources';
+  document.getElementById('hero-sub').textContent   = isP
+    ? 'Choose a health topic below to find resources for you and your family.'
+    : 'Choose a topic to access clinical guidelines, tools and education resources.';
+
+  document.getElementById('clear-btn').className = 'clear-btn ' + (isP ? 'patient-clear' : 'clinician-clear');
+
+  var tp = document.getElementById('screen-topic');
+  tp.className = 'screen ' + (isP ? 'patient-page' : 'clinician-page');
+}
+
+function goHome() {
+  document.getElementById('app').style.display = 'none';
+  var splash = document.getElementById('splash');
+  splash.style.display = 'flex';
+  splash.style.animation = 'fadeIn .3s ease';
+  document.getElementById('global-search').value = '';
+  document.getElementById('page-search').value   = '';
+  currentRole  = null;
+  currentTopic = null;
+}
+
+/* ════════ BUILD TILE GRID ════════ */
+function buildTileGrid() {
+  var grid      = document.getElementById('tile-grid');
+  var tileClass = currentRole === 'patient' ? 'patient-tile' : 'clinician-tile';
+  grid.innerHTML = '';
+  TOPICS.forEach(function(t) {
+    var tile = document.createElement('div');
+    tile.className = 'topic-tile ' + tileClass;
+    tile.innerHTML =
+      '<div class="tile-icon">' + t.icon + '</div>' +
+      '<div class="tile-label">' + esc(t.label) + '</div>' +
+      '<div class="tile-count">' + t.resources.length + ' resources</div>';
+    tile.addEventListener('click', function() { openTopic(t); });
+    grid.appendChild(tile);
+  });
+}
+
+/* ════════ OPEN TOPIC PAGE ════════ */
+function openTopic(topic) {
+  currentTopic = topic;
+  document.getElementById('page-ico').textContent   = topic.icon;
+  document.getElementById('page-title').textContent = topic.label;
+  document.getElementById('page-sub').textContent   = topic.sub;
+  document.getElementById('page-search').value = '';
+  renderResources('');
+  showScreen('screen-topic');
+}
+
+function renderResources(q) {
+  var grid = document.getElementById('res-tile-grid');
+  grid.innerHTML = '';
+  if (!currentTopic) return;
+  var filtered = currentTopic.resources.filter(function(r) {
+    if (!q) return true;
+    return r.title.toLowerCase().indexOf(q) > -1 || r.desc.toLowerCase().indexOf(q) > -1;
+  });
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty"><div class="big">🔍</div>No resources match "' + esc(q) + '"</div>';
+    return;
+  }
+  filtered.forEach(function(r) {
+    var tile = document.createElement('div');
+    tile.className = 'res-tile';
+    if (r.url && r.url !== '#') {
+      tile.addEventListener('click', function() { window.open(r.url, '_blank', 'noopener'); });
+    }
+    tile.innerHTML =
+      '<div class="res-tile-top">' +
+        '<div class="res-tile-ico" style="background:' + (TYPE_BG[r.type]||'#eee') + '">' + (TYPE_ICON[r.type]||'📎') + '</div>' +
+        '<div class="res-tile-title">' + esc(r.title) + '</div>' +
+      '</div>' +
+      '<div class="res-tile-desc">' + esc(r.desc) + '</div>' +
+      '<div class="res-tile-foot"><span class="badge ' + (TYPE_CLS[r.type]||'b-link') + '">' + (TYPE_LBL[r.type]||'Item') + '</span></div>';
+    grid.appendChild(tile);
+  });
+}
+
+document.getElementById('page-search').addEventListener('input', function() {
+  renderResources(this.value.trim().toLowerCase());
+});
+
+/* ════════ GLOBAL SEARCH ════════ */
+document.getElementById('global-search').addEventListener('input', function() {
+  var q = this.value.trim().toLowerCase();
+  if (!q) { showHome(); return; }
+  doSearch(q);
+});
+
+function clearSearch() {
+  document.getElementById('global-search').value = '';
+  showHome();
+}
+
+function doSearch(q) {
+  showScreen('screen-search');
+  var hits = [];
+  TOPICS.forEach(function(t) {
+    t.resources.forEach(function(r) {
+      if (r.title.toLowerCase().indexOf(q) > -1 || r.desc.toLowerCase().indexOf(q) > -1 || t.label.toLowerCase().indexOf(q) > -1) {
+        hits.push({r:r, topic:t});
+      }
+    });
+  });
+
+  var tc = currentRole === 'patient' ? 'patient-topic' : 'clinician-topic';
+  document.getElementById('sr-count').textContent = hits.length + ' result' + (hits.length !== 1 ? 's' : '') + ' for "' + q + '"';
+  var srList = document.getElementById('sr-list');
+  srList.innerHTML = '';
+
+  if (hits.length === 0) {
+    srList.innerHTML = '<div class="empty"><div class="big">🤷</div>No resources found. Try a different term.</div>';
+    return;
+  }
+  hits.forEach(function(h) {
+    var r = h.r; var t = h.topic;
+    var card = document.createElement('div');
+    card.className = 'sr-card';
+    if (r.url && r.url !== '#') card.addEventListener('click', function() { window.open(r.url, '_blank', 'noopener'); });
+    card.innerHTML =
+      '<div style="font-size:24px;flex-shrink:0">' + t.icon + '</div>' +
+      '<div class="sr-body">' +
+        '<b>' + esc(r.title) + '</b>' +
+        '<span class="sr-desc">' + esc(r.desc) + '</span>' +
+        '<span class="sr-topic ' + tc + '">' + esc(t.label) + '</span>' +
+      '</div>' +
+      '<span class="badge ' + (TYPE_CLS[r.type]||'b-link') + '">' + (TYPE_LBL[r.type]||'Item') + '</span>';
+    srList.appendChild(card);
+  });
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
