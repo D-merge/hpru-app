@@ -1,3 +1,6 @@
+
+Copy
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,11 +29,11 @@
       --radius-sm: 10px;
     }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--mist); color: var(--deep); min-height: 100vh; }
-
+ 
     @keyframes fadeIn  { from { opacity:0; }                        to { opacity:1; } }
     @keyframes slideUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
     @keyframes fadeOut { from { opacity:1; }                        to { opacity:0; } }
-
+ 
     /* ══════════════════════════════════════
        SPLASH — fits one screen, all sizes
     ══════════════════════════════════════ */
@@ -41,20 +44,20 @@
       animation: fadeIn .4s ease;
       overflow: hidden;
     }
-
+ 
     /* Flag bars */
     .splash-flagbar { width: 100%; height: 8px; display: flex; flex-shrink: 0; }
     .splash-flagbar span { flex: 1; }
     .splash-flagbar span:nth-child(1) { background: #1a1a1a; }
     .splash-flagbar span:nth-child(2) { background: var(--orange); }
     .splash-flagbar span:nth-child(3) { background: #1a1a1a; }
-
+ 
     .splash-flagbar-bot { width: 100%; height: 8px; display: flex; flex-shrink: 0; }
     .splash-flagbar-bot span { flex: 1; }
     .splash-flagbar-bot span:nth-child(1) { background: #1a5faa; }
     .splash-flagbar-bot span:nth-child(2) { background: var(--white); }
     .splash-flagbar-bot span:nth-child(3) { background: #1a5faa; }
-
+ 
     /* Centred body — flex fills remaining space */
     .splash-body {
       flex: 1; display: flex; flex-direction: column; align-items: center;
@@ -62,7 +65,7 @@
       padding: 8px 20px 4px;
       width: 100%; max-width: 480px;
     }
-
+ 
     .splash-emblem {
       width: 82px; height: 82px; border-radius: 50%;
       background: var(--orange);
@@ -72,7 +75,7 @@
       animation: slideUp .5s ease .1s both;
       flex-shrink: 0;
     }
-
+ 
     .splash-titles { text-align: center; animation: slideUp .5s ease .18s both; }
     .splash-title {
       font-size: 24px; font-weight: 800; color: var(--white); margin-bottom: 4px;
@@ -81,7 +84,7 @@
       font-size: 11px; color: rgba(255,255,255,.5);
       text-transform: uppercase; letter-spacing: .14em;
     }
-
+ 
     /* Dot divider */
     .splash-dots {
       display: flex; gap: 7px; align-items: center;
@@ -93,13 +96,13 @@
     .splash-dots i:nth-child(2),
     .splash-dots i:nth-child(4) { width:8px; height:8px; opacity:.85; }
     .splash-dots i:nth-child(3) { width:12px; height:12px; }
-
+ 
     .splash-prompt {
       font-size: 11px; font-weight: 700; color: rgba(255,255,255,.55);
       letter-spacing: .14em; text-transform: uppercase;
       animation: slideUp .5s ease .3s both;
     }
-
+ 
     /* Role cards — SIDE BY SIDE, solid colours */
     .role-cards {
       display: flex; flex-direction: row; gap: 14px;
@@ -128,7 +131,7 @@
     .role-ico  { font-size: 34px; }
     .role-name { font-size: 15px; font-weight: 800; color: var(--white); }
     .role-hint { font-size: 10.5px; color: rgba(255,255,255,.8); text-align: center; line-height: 1.45; }
-
+ 
     /* Acknowledgement — tight, above bottom bar */
     .splash-ack {
       font-size: 9.5px; color: rgba(255,255,255,.32);
@@ -136,13 +139,13 @@
       line-height: 1.5; width: 100%; flex-shrink: 0;
       animation: slideUp .4s ease .48s both;
     }
-
+ 
     /* ══════════════════════════════════════
        APP SHELL
     ══════════════════════════════════════ */
     #app { display: none; }
     #app.visible { display: block; animation: fadeIn .3s ease; }
-
+ 
     /* ── HEADER ── */
     #header {
       background: var(--deep);
@@ -151,7 +154,7 @@
       box-shadow: 0 2px 16px rgba(0,0,0,.4);
     }
     .header-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 12px; height: 58px; padding: 0 18px; }
-
+ 
     .home-btn {
       width: 34px; height: 34px; flex-shrink: 0;
       background: var(--orange); border: none; border-radius: 50%;
@@ -161,32 +164,32 @@
       transition: transform .18s, box-shadow .18s;
     }
     .home-btn:hover { transform: scale(1.1); box-shadow: 0 0 0 5px rgba(232,101,10,.4); }
-
+ 
     .hdr-title { flex-shrink: 0; }
     .hdr-title h1 { font-size: 14px; font-weight: 800; color: var(--white); line-height: 1.2; }
     .hdr-title p  { font-size: 9.5px; color: rgba(255,255,255,.38); text-transform: uppercase; letter-spacing: .07em; }
-
+ 
     .hdr-sep { width: 1px; height: 24px; background: rgba(255,255,255,.12); flex-shrink: 0; }
-
+ 
     .role-badge { flex-shrink: 0; font-size: 10.5px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: .04em; text-transform: uppercase; }
     .role-badge.patient   { background: rgba(100,181,246,.15); color: #90caf9; border: 1px solid rgba(100,181,246,.3); }
     .role-badge.clinician { background: rgba(232,101,10,.15);  color: #ffb060; border: 1px solid rgba(232,101,10,.35); }
-
+ 
     .search-wrap { flex: 1; position: relative; min-width: 0; }
     .search-wrap .s-ico { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; pointer-events: none; }
     #global-search { width: 100%; background: rgba(255,255,255,.09); border: 1.5px solid rgba(255,255,255,.14); border-radius: 28px; padding: 7px 14px 7px 34px; font-size: 13px; color: var(--white); outline: none; font-family: inherit; transition: background .2s, border-color .2s; }
     #global-search::placeholder { color: rgba(255,255,255,.35); }
     #global-search:focus { background: rgba(255,255,255,.14); border-color: var(--orange); }
-
+ 
     /* ══════════════════════════════════════
        SCREENS
     ══════════════════════════════════════ */
     #main { max-width: 960px; margin: 0 auto; padding: 24px 16px 60px; }
-
+ 
     /* screen transitions */
     .screen { display: none; }
     .screen.active { display: block; animation: fadeIn .25s ease; }
-
+ 
     /* ── HERO ── */
     .hero {
       border-radius: var(--radius); padding: 22px 26px; margin-bottom: 22px;
@@ -205,19 +208,19 @@
     .hero-text { position: relative; z-index: 1; }
     .hero-text h2 { font-size: 18px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
     .hero-text p  { font-size: 13px; color: rgba(255,255,255,.8); }
-
+ 
     /* ══════════════════════════════════════
        TILE GRID (home screen)
     ══════════════════════════════════════ */
     .section-lbl { font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--slate); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
     .section-lbl::after { content:''; flex:1; height:1px; background: linear-gradient(90deg, #c8a878 0%, transparent 80%); }
-
+ 
     .tile-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       gap: 14px;
     }
-
+ 
     .topic-tile {
       background: var(--white);
       border-radius: var(--radius);
@@ -239,11 +242,11 @@
     }
     .patient-tile::before   { color: var(--blue-md); }
     .clinician-tile::before { color: var(--orange); }
-
+ 
     .topic-tile:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
     .patient-tile:hover   { border-color: var(--blue-md); }
     .clinician-tile:hover { border-color: var(--orange); }
-
+ 
     .tile-icon { font-size: 36px; }
     .tile-label { font-size: 13.5px; font-weight: 700; color: var(--deep); line-height: 1.3; }
     .tile-count {
@@ -251,7 +254,7 @@
     }
     .patient-tile   .tile-count { background: var(--blue-lt); color: var(--blue-dk); }
     .clinician-tile .tile-count { background: var(--orange-lt); color: var(--orange-dk); }
-
+ 
     /* ══════════════════════════════════════
        TOPIC PAGE
     ══════════════════════════════════════ */
@@ -266,7 +269,7 @@
     }
     .patient-page   .topic-page-header { border-left-color: var(--blue-md); }
     .clinician-page .topic-page-header { border-left-color: var(--orange); }
-
+ 
     .back-btn {
       background: none; border: none; cursor: pointer;
       font-size: 20px; flex-shrink: 0; padding: 4px;
@@ -277,7 +280,7 @@
     .page-meta { flex: 1; }
     .page-meta h2 { font-size: 18px; font-weight: 800; margin-bottom: 2px; }
     .page-meta p  { font-size: 12px; color: var(--slate); }
-
+ 
     /* Sub-search on topic page */
     .page-search-wrap { position: relative; margin-bottom: 14px; }
     .page-search-wrap .s-ico { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; color: var(--slate); }
@@ -289,7 +292,7 @@
     }
     .patient-page   .page-search:focus { border-color: var(--blue-md); }
     .clinician-page .page-search:focus { border-color: var(--orange); }
-
+ 
     /* Resource tiles on topic page */
     .res-tile-grid {
       display: grid;
@@ -309,7 +312,7 @@
     .res-tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
     .patient-page   .res-tile:hover { border-color: var(--blue-lt); }
     .clinician-page .res-tile:hover { border-color: var(--orange-lt); }
-
+ 
     .res-tile-top { display: flex; align-items: center; gap: 10px; }
     .res-tile-ico { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
     .res-tile-title { font-size: 13.5px; font-weight: 700; line-height: 1.3; flex: 1; }
@@ -320,10 +323,10 @@
     .b-link  { background: var(--blue-lt); color: var(--blue-dk); }
     .b-video { background: #fde8e8; color: #8a1a00; }
     .b-tool  { background: var(--orange-lt); color: var(--orange-dk); }
-
+ 
     .empty { text-align: center; padding: 40px 16px; color: var(--slate); font-size: 14px; }
     .empty .big { font-size: 36px; margin-bottom: 10px; }
-
+ 
     /* ══════════════════════════════════════
        SEARCH RESULTS SCREEN
     ══════════════════════════════════════ */
@@ -341,7 +344,7 @@
     .sr-topic { font-size: 11px; font-weight: 700; display: block; margin-top: 4px; }
     .patient-topic   { color: var(--blue-md); }
     .clinician-topic { color: var(--orange); }
-
+ 
     /* Footer */
     .app-footer { max-width: 960px; margin: 0 auto; padding: 0 16px 28px; }
     .footer-bar { height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--orange), var(--ochre), #90caf9, transparent); }
@@ -349,22 +352,22 @@
   </style>
 </head>
 <body>
-
+ 
 <!-- ════════ SPLASH ════════ -->
 <div id="splash">
   <div class="splash-flagbar"><span></span><span></span><span></span></div>
-
+ 
   <div class="splash-body">
     <div class="splash-emblem">🌿</div>
     <div class="splash-titles">
       <div class="splash-title">Health Promotion R Us</div>
       <div class="splash-tagline">Resource Library</div>
     </div>
-
+ 
     <div class="splash-dots">
       <i></i><i></i><i></i><i></i><i></i>
     </div>
-
+ 
     <div class="splash-prompt">I am a…</div>
     <div class="role-cards">
       <div class="role-card patient" onclick="selectRole('patient')">
@@ -379,11 +382,11 @@
       </div>
     </div>
   </div>
-
+ 
   <div class="splash-ack">We acknowledge the Traditional Custodians of Country throughout Australia and pay our respects to Elders past and present.</div>
   <div class="splash-flagbar-bot"><span></span><span></span><span></span></div>
 </div>
-
+ 
 <!-- ════════ APP ════════ -->
 <div id="app">
   <div id="header">
@@ -401,9 +404,9 @@
       </div>
     </div>
   </div>
-
+ 
   <div id="main">
-
+ 
     <!-- SCREEN 1: Home tile grid -->
     <div id="screen-home" class="screen">
       <div class="hero" id="hero-banner">
@@ -416,7 +419,7 @@
       <div class="section-lbl">Health Topics</div>
       <div class="tile-grid" id="tile-grid"></div>
     </div>
-
+ 
     <!-- SCREEN 2: Topic page -->
     <div id="screen-topic" class="screen">
       <div class="topic-page-header" id="topic-page-header">
@@ -433,7 +436,7 @@
       </div>
       <div class="res-tile-grid" id="res-tile-grid"></div>
     </div>
-
+ 
     <!-- SCREEN 3: Search results -->
     <div id="screen-search" class="screen">
       <div class="sr-bar">
@@ -442,15 +445,15 @@
       </div>
       <div id="sr-list"></div>
     </div>
-
+ 
   </div>
-
+ 
   <div class="app-footer">
     <div class="footer-bar"></div>
     <div class="footer-txt">Acknowledging Country · HPRU Resource Library</div>
   </div>
 </div>
-
+ 
 <script>
 /* ════════════════════════════════════════════════════════════════
    GOOGLE SHEETS CONFIG
@@ -458,7 +461,7 @@
    In Google Sheets: File → Share → Publish to web → CSV format
    ════════════════════════════════════════════════════════════════ */
 var SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTqhB2xT43RTWAaCk0vvZnguaFFjyomAUSNhN0j2VR3X5wr4_88AfM5Q22aTeh_Cg/pub?gid=332757259&single=true&output=csv';
-
+ 
 /* ════════════════════════════ TOPIC COLOUR MAP
    Defines background colour for each topic tile icon.
    Add a new entry here if you add a new topic_id in the sheet. */
@@ -467,7 +470,7 @@ var TOPIC_BG = {
   rhd:       "#fff5f5", anaemia:  "#fff7ed", mental:   "#f5f3ff",
   nutrition: "#ecfdf5", physical: "#fffbeb"
 };
-
+ 
 /* ════════════════════════════ FALLBACK DATA
    Used when the app is offline or the sheet cannot be reached.
    Keep this in sync with your sheet during quarterly reviews. */
@@ -574,15 +577,15 @@ var FALLBACK_TOPICS = [
     ]
   }
 ];
-
+ 
 /* ════════ Active topics (set by loader) ════════ */
 var TOPICS = FALLBACK_TOPICS;
-
+ 
 var TYPE_ICON = {pdf:"📄", link:"🔗", video:"▶️", tool:"🛠️"};
 var TYPE_BG   = {pdf:"#ffecd6", link:"#deeaf8", video:"#fde8e8", tool:"#fdf0e4"};
 var TYPE_CLS  = {pdf:"b-pdf",   link:"b-link",  video:"b-video", tool:"b-tool"};
 var TYPE_LBL  = {pdf:"PDF",     link:"Link",    video:"Video",   tool:"Tool"};
-
+ 
 /* ════════════════════════════════════════════════════════════════
    CSV PARSER  — reads the Google Sheet published CSV
    Expects header row: topic_id, topic_label, topic_icon,
@@ -591,7 +594,7 @@ var TYPE_LBL  = {pdf:"PDF",     link:"Link",    video:"Video",   tool:"Tool"};
 function parseCSV(text) {
   var lines = text.trim().split('\n');
   if (lines.length < 2) return null;
-
+ 
   // parse a single CSV line respecting quoted fields
   function parseLine(line) {
     var fields = []; var cur = ''; var inQ = false;
@@ -604,27 +607,27 @@ function parseCSV(text) {
     fields.push(cur.trim());
     return fields;
   }
-
+ 
   var headers = parseLine(lines[0]).map(function(h){ return h.replace(/^"|"$/g,'').trim(); });
   var idx = {};
   headers.forEach(function(h, i){ idx[h] = i; });
-
+ 
   // require minimum columns
   if (idx['topic_id'] === undefined || idx['title'] === undefined) return null;
-
+ 
   var topicMap = {};
   var topicOrder = [];
-
+ 
   for (var r = 1; r < lines.length; r++) {
     var f = parseLine(lines[r]);
     if (!f || f.length < 4) continue;
     var get = function(col){ return (idx[col] !== undefined && f[idx[col]]) ? f[idx[col]].replace(/^"|"$/g,'').trim() : ''; };
-
+ 
     var tid   = get('topic_id');
     var type  = get('type') || 'link';
     var title = get('title');
     if (!tid || !title) continue;
-
+ 
     if (!topicMap[tid]) {
       topicMap[tid] = {
         id:    tid,
@@ -643,55 +646,68 @@ function parseCSV(text) {
       url:   get('url') || '#'
     });
   }
-
+ 
   if (topicOrder.length === 0) return null;
   return topicOrder.map(function(id){ return topicMap[id]; });
 }
-
+ 
 /* ════════════════════════════════════════════════════════════════
    SHEET LOADER — fetches CSV, falls back to bundled data
+   Uses a CORS proxy to handle Google Sheets redirect
    ════════════════════════════════════════════════════════════════ */
 function loadSheetData(onDone) {
   if (!SHEET_CSV_URL || SHEET_CSV_URL === 'PASTE_YOUR_URL_HERE') {
     onDone(false);
     return;
   }
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', SHEET_CSV_URL, true);
-  xhr.timeout = 8000;
-  xhr.onload = function() {
-    if (xhr.status === 200) {
-      try {
-        var parsed = parseCSV(xhr.responseText);
-        if (parsed) { TOPICS = parsed; onDone(true); return; }
-      } catch(e) {}
-    }
-    onDone(false);
-  };
-  xhr.onerror   = function(){ onDone(false); };
-  xhr.ontimeout = function(){ onDone(false); };
-  xhr.send();
+ 
+  // Try direct fetch first, fall back to CORS proxy if needed
+  var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(SHEET_CSV_URL);
+ 
+  function tryFetch(url, useProxy, fallbackFn) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.timeout = 8000;
+    xhr.onload = function() {
+      if (xhr.status === 200 && xhr.responseText && xhr.responseText.length > 50) {
+        try {
+          var parsed = parseCSV(xhr.responseText);
+          if (parsed) { TOPICS = parsed; onDone(true); return; }
+        } catch(e) {}
+      }
+      if (fallbackFn) fallbackFn();
+      else onDone(false);
+    };
+    xhr.onerror   = function(){ if (fallbackFn) fallbackFn(); else onDone(false); };
+    xhr.ontimeout = function(){ if (fallbackFn) fallbackFn(); else onDone(false); };
+    xhr.send();
+  }
+ 
+  // Try direct first, then proxy
+  tryFetch(SHEET_CSV_URL, false, function() {
+    tryFetch(proxyUrl, true, null);
+  });
 }
-
+ 
 var currentRole  = null;
 var currentTopic = null;
-
+ 
 /* ════════ NAVIGATION ════════ */
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
 }
-
+ 
 function showHome() {
   document.getElementById('page-search').value = '';
   showScreen('screen-home');
 }
-
+ 
 /* ════════ SPLASH → APP ════════ */
 function selectRole(role) {
   currentRole = role;
-
+ 
   // Show loading state on the selected card
   var cards = document.querySelectorAll('.role-card');
   cards.forEach(function(c){ c.style.pointerEvents = 'none'; c.style.opacity = '0.6'; });
@@ -700,7 +716,7 @@ function selectRole(role) {
     var nameEl = clicked.querySelector('.role-name');
     if (nameEl) nameEl.textContent = 'Loading…';
   }
-
+ 
   loadSheetData(function(fromSheet) {
     var splash = document.getElementById('splash');
     splash.style.animation = 'fadeOut .3s ease forwards';
@@ -719,7 +735,7 @@ function selectRole(role) {
     }, 280);
   });
 }
-
+ 
 function showDataBanner(msg) {
   var existing = document.getElementById('data-banner');
   if (existing) existing.remove();
@@ -731,13 +747,13 @@ function showDataBanner(msg) {
   main.insertBefore(b, main.firstChild);
   setTimeout(function(){ if(b.parentNode) b.parentNode.removeChild(b); }, 6000);
 }
-
+ 
 function applyRole(role) {
   var isP = role === 'patient';
   var badge = document.getElementById('role-badge');
   badge.textContent = isP ? '👤 Patient' : '🩺 Clinician';
   badge.className   = 'role-badge ' + role;
-
+ 
   var hero = document.getElementById('hero-banner');
   hero.className = 'hero ' + (isP ? 'patient-hero' : 'clinician-hero');
   document.getElementById('hero-icon').textContent  = isP ? '🙋' : '🩺';
@@ -745,13 +761,13 @@ function applyRole(role) {
   document.getElementById('hero-sub').textContent   = isP
     ? 'Choose a health topic below to find resources for you and your family.'
     : 'Choose a topic to access clinical guidelines, tools and education resources.';
-
+ 
   document.getElementById('clear-btn').className = 'clear-btn ' + (isP ? 'patient-clear' : 'clinician-clear');
-
+ 
   var tp = document.getElementById('screen-topic');
   tp.className = 'screen ' + (isP ? 'patient-page' : 'clinician-page');
 }
-
+ 
 function goHome() {
   document.getElementById('app').style.display = 'none';
   var splash = document.getElementById('splash');
@@ -762,7 +778,7 @@ function goHome() {
   currentRole  = null;
   currentTopic = null;
 }
-
+ 
 /* ════════ BUILD TILE GRID ════════ */
 function buildTileGrid() {
   var grid      = document.getElementById('tile-grid');
@@ -779,7 +795,7 @@ function buildTileGrid() {
     grid.appendChild(tile);
   });
 }
-
+ 
 /* ════════ OPEN TOPIC PAGE ════════ */
 function openTopic(topic) {
   currentTopic = topic;
@@ -790,7 +806,7 @@ function openTopic(topic) {
   renderResources('');
   showScreen('screen-topic');
 }
-
+ 
 function renderResources(q) {
   var grid = document.getElementById('res-tile-grid');
   grid.innerHTML = '';
@@ -819,23 +835,23 @@ function renderResources(q) {
     grid.appendChild(tile);
   });
 }
-
+ 
 document.getElementById('page-search').addEventListener('input', function() {
   renderResources(this.value.trim().toLowerCase());
 });
-
+ 
 /* ════════ GLOBAL SEARCH ════════ */
 document.getElementById('global-search').addEventListener('input', function() {
   var q = this.value.trim().toLowerCase();
   if (!q) { showHome(); return; }
   doSearch(q);
 });
-
+ 
 function clearSearch() {
   document.getElementById('global-search').value = '';
   showHome();
 }
-
+ 
 function doSearch(q) {
   showScreen('screen-search');
   var hits = [];
@@ -846,12 +862,12 @@ function doSearch(q) {
       }
     });
   });
-
+ 
   var tc = currentRole === 'patient' ? 'patient-topic' : 'clinician-topic';
   document.getElementById('sr-count').textContent = hits.length + ' result' + (hits.length !== 1 ? 's' : '') + ' for "' + q + '"';
   var srList = document.getElementById('sr-list');
   srList.innerHTML = '';
-
+ 
   if (hits.length === 0) {
     srList.innerHTML = '<div class="empty"><div class="big">🤷</div>No resources found. Try a different term.</div>';
     return;
@@ -872,7 +888,7 @@ function doSearch(q) {
     srList.appendChild(card);
   });
 }
-
+ 
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
