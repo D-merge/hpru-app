@@ -321,7 +321,7 @@
    Replace the URL below with your published CSV URL.
    In Google Sheets: File -> Share -> Publish to web -> CSV format
 ------------------------------------------------------------------------- */
-var SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTqhB2xT43RTWAaCk0vvZnguaFFjyomAUSNhN0j2VR3X5wr4_88AfM5Q22aTeh_Cg/pub?output=csv';
+var SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTqhB2xT43RTWAaCk0vvZnguaFFjyomAUSNhN0j2VR3X5wr4_88AfM5Q22aTeh_Cg/pub?gid=332757259&single=true&output=csv';
  
 /* -------------------------------------------------------------------------
    TOPIC ICON BACKGROUND COLOURS (keyed by topic_id)
@@ -456,6 +456,14 @@ function parseCSV(text) {
   var lines = text.trim().split('\n');
   if (lines.length < 2) { return null; }
  
+  // Skip title rows before the actual header - find row containing 'topic_id'
+  var headerIdx = 0;
+  for (var h = 0; h < lines.length; h++) {
+    if (lines[h].indexOf('topic_id') > -1) { headerIdx = h; break; }
+  }
+  if (headerIdx > 0) { lines = lines.slice(headerIdx); }
+  if (lines.length < 2) { return null; }
+ 
   function parseLine(line) {
     var fields = []; var cur = ''; var inQ = false;
     for (var i = 0; i < line.length; i++) {
@@ -533,6 +541,10 @@ function loadSheetData(onDone) {
           if (isProxy) {
             var wrapper = JSON.parse(text);
             text = wrapper.contents || text;
+            // allorigins sometimes returns base64 data URI: data:text/csv;base64,...
+            if (text.startsWith('data:') && text.indexOf('base64,') > -1) {
+              text = atob(text.split('base64,')[1]);
+            }
           }
           if (text.length > 50) {
             var parsed = parseCSV(text);
